@@ -22,6 +22,8 @@ import {
   Button,
   PaginationVariant,
   Pagination,
+  Tooltip,
+  Brand,
 } from '@patternfly/react-core';
 import {
   Table,
@@ -36,6 +38,7 @@ import {
 } from '@patternfly/react-table';
 import { FilterIcon } from '@patternfly/react-icons';
 import { Workspace, WorkspaceState } from '~/shared/types';
+import { buildKindLogoDictionary } from '~/app/actions/WorkspacekindsActions';
 
 export const Workspaces: React.FunctionComponent = () => {
   /* Mocked workspaces, to be removed after fetching info from backend */
@@ -119,6 +122,21 @@ export const Workspaces: React.FunctionComponent = () => {
       },
     },
   ];
+
+  const [kindLogoDict, setKindLogoDict] = React.useState<Record<string, string>>({});
+
+  React.useEffect(() => {
+    const loadKindLogoDict = async () => {
+      try {
+        const dict = await buildKindLogoDictionary(); // Resolve the promise
+        setKindLogoDict(dict);
+      } catch (err: any) {
+        console.log(err.message || 'Failed to load kind logo dictionary');
+      }
+    };
+
+    loadKindLogoDict();
+  }, [workspaces]);
 
   // Table columns
   const columnNames = {
@@ -444,7 +462,15 @@ export const Workspaces: React.FunctionComponent = () => {
           {sortedWorkspaces.map((workspace, rowIndex) => (
             <Tr key={rowIndex}>
               <Td dataLabel={columnNames.name}>{workspace.name}</Td>
-              <Td dataLabel={columnNames.kind}>{workspace.kind}</Td>
+              <Td dataLabel={columnNames.kind}>
+                <Tooltip content={workspace.kind}>
+                  <Brand
+                    src={kindLogoDict[workspace.kind]}
+                    alt={workspace.kind}
+                    style={{ width: '20px', height: '20px', cursor: 'pointer' }} // Optional inline styles
+                  />
+                </Tooltip>
+              </Td>
               <Td dataLabel={columnNames.image}>{workspace.options.imageConfig}</Td>
               <Td dataLabel={columnNames.podConfig}>{workspace.options.podConfig}</Td>
               <Td dataLabel={columnNames.state}>
