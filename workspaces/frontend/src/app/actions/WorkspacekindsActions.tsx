@@ -5,61 +5,61 @@ const WORKSPACE_KINDS_URL = `/api/${BFF_API_VERSION}/workspacekinds`;
 
 const workspacekinds: WorkspaceKind[] = [
     {
-    "name": "jupyter-lab",
-    "displayName": "JupyterLab Notebook",
-    "description": "A Workspace which runs JupyterLab in a Pod",
-    "deprecated": false,
-    "deprecationMessage": "This WorkspaceKind will be removed on 20XX-XX-XX, please use another WorkspaceKind.",
-    "hidden": false,
-    "icon": {
-        "url": "https://jupyter.org/assets/favicons/apple-touch-icon-152x152.png"
+    name: "jupyter-lab",
+    displayName: "JupyterLab Notebook",
+    description: "A Workspace which runs JupyterLab in a Pod",
+    deprecated: false,
+    deprecationMessage: "This WorkspaceKind will be removed on 20XX-XX-XX, please use another WorkspaceKind.",
+    hidden: false,
+    icon: {
+        url: "https://jupyter.org/assets/favicons/apple-touch-icon-152x152.png"
     },
-    "logo": {
-        "url": "https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg"
+    logo: {
+        url: "https://upload.wikimedia.org/wikipedia/commons/3/38/Jupyter_logo.svg"
     },
-    "podTemplate": {
-        "podMetadata": {
-            "labels": {
-                    "myWorkspaceKindLabel": "my-value"
+    podTemplate: {
+        podMetadata: {
+            labels: {
+                    myWorkspaceKindLabel: "my-value"
             },
-            "annotations": {
-                    "myWorkspaceKindAnnotation": "my-value"
+            annotations: {
+                    myWorkspaceKindAnnotation: "my-value"
             }
         },
-        "volumeMounts": {
-            "home": "/home/jovyan"
+        volumeMounts: {
+            home: "/home/jovyan"
         },
-        "options": {
-            "imageConfig": {
-                "default": "jupyterlab_scipy_190",
-                "values": [
+        options: {
+            imageConfig: {
+                default: "jupyterlab_scipy_190",
+                values: [
                     {
-                    "id": "jupyterlab_scipy_180",
-                    "displayName": "jupyter-scipy:v1.8.0",
-                    "labels": {
-                        "pythonVersion": "3.11"
+                    id: "jupyterlab_scipy_180",
+                    displayName: "jupyter-scipy:v1.8.0",
+                    labels: {
+                        pythonVersion: "3.11"
                     },
-                    "hidden": true,
-                    "redirect": {
-                        "to": "jupyterlab_scipy_190",
-                        "message": {
-                            "text": "This update will change...",
-                            "level": "Info"
+                    hidden: true,
+                    redirect: {
+                        to: "jupyterlab_scipy_190",
+                        message: {
+                            text: "This update will change...",
+                            level: "Info"
                         }
                     }
                 },
                 ]
             },
-            "podConfig": {
-                "default": "tiny_cpu",
-                "values": [
+            podConfig: {
+                default: "tiny_cpu",
+                values: [
                     {
-                    "id": "tiny_cpu",
-                    "displayName": "Tiny CPU",
-                    "description": "Pod with 0.1 CPU, 128 Mb RAM",
-                    "labels": {
-                        "cpu": "100m",
-                        "memory": "128Mi"
+                    id: "tiny_cpu",
+                    displayName: "Tiny CPU",
+                    description: "Pod with 0.1 CPU, 128 Mb RAM",
+                    labels: {
+                        cpu: "100m",
+                        memory: "128Mi"
                         }
                     }, 
                 ]
@@ -102,8 +102,8 @@ export async function buildKindLogoDictionary(): Promise<KindLogoDict> {
 
   try {
     //Note: For now, we will use a mock API until the API mechanism is ready
-    //const workspaceKinds: WorkspaceKind[] = await fetchAllWorkspacekinds();
-    const workspaceKinds: WorkspaceKind[] = workspacekinds
+    const workspaceKinds: WorkspaceKind[] = await fetchAllWorkspacekinds();
+    // const workspaceKinds: WorkspaceKind[] = workspacekinds
     
     for (const workspaceKind of workspaceKinds) {
       kindLogoDict[workspaceKind.name] = workspaceKind.logo.url;
