@@ -128,7 +128,7 @@ export const Workspaces: React.FunctionComponent = () => {
   React.useEffect(() => {
     const loadKindLogoDict = async () => {
       try {
-        const dict = await buildKindLogoDictionary(); // Resolve the promise
+        const dict = await buildKindLogoDictionary();
         setKindLogoDict(dict);
       } catch (err: any) {
         console.log(err.message || 'Failed to load kind logo dictionary');
