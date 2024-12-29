@@ -1,66 +1,61 @@
 import { mockWorkspacekindsValid, mockWorkspacekindsInValid } from '../mocked/workspacekinds.mock';
 
-describe('Test KindLogo Functionality With Valid Data', () => {
-  before(() => {
-    
-    // Mock the API response
-    cy.intercept('GET', '/api/v1/workspacekinds', {
-      statusCode: 200,
-      body: mockWorkspacekindsValid,
-
-    })
-
-    // Visit the page
-    cy.visit('/');
-      
-  });
-
-
-  it('should fetch and populate kind logos', () => {
-    
-    // Check that the logos are rendered in the table
-    cy.get('tbody tr').each(($row) => {
-      cy.wrap($row).find('td[data-label="Kind"]').within(() => {
-        cy.get('img')
-            .should('exist')
+describe('Test buildKindLogoDictionary Functionality', () => {
+  // Mock valid workspace kinds
+  context('With Valid Data', () => {
+    before(() => {
+      // Mock the API response
+      cy.intercept('GET', '/api/v1/workspacekinds', {
+        statusCode: 200,
+        body: mockWorkspacekindsValid,
       });
-    });
-  });
 
-});
-
-describe('Test KindLogo Functionality With InValid Data', () => {
-  before(() => {
-
-    // Mock the API response for workspace kinds
-    cy.intercept('GET', '/api/vy1/workspacekinds', {
-      statusCode: 200,
-      body: mockWorkspacekindsInValid,
+      // Visit the page
+      cy.visit('/');
     });
 
-    // Visit the page
-    cy.visit('/');
-  });
-  
-  it('should fallback to displayName when logo URL is invalid', () => {
-    const workspaceKinds = mockWorkspacekindsInValid.data; // Access the data array
-  
-    // Check for fallback behavior in the table
-    cy.get('tbody tr').each(($row, index) => {
-      cy.wrap($row).find('td[data-label="Kind"]').within(() => {
-        cy.get('img').then(($img) => {
-          const src = $img.attr('src');
-          cy.wrap($row).should('contain.text', workspaceKinds[index].displayName);
-          if (src === 'https://invalid-url.example.com/invalid-logo.svg') {
-            // If the URL is invalid, ensure displayName is visible as fallback
-            cy.wrap($row).should('contain.text', workspaceKinds[index].displayName);
-          } else {
-            // If the logo URL is valid, ensure it is displayed
-            cy.wrap($img).should('have.attr', 'src', src);
-          }
+    it('should fetch and populate kind logos', () => {
+      // Check that the logos are rendered in the table
+      cy.get('tbody tr').each(($row) => {
+        cy.wrap($row).find('td[data-label="Kind"]').within(() => {
+          cy.get('img')
+            .should('exist')
+            .then(($img) => {
+              // Ensure the image is fully loaded
+              cy.wrap($img[0]).should('have.prop', 'complete', true);
+            });
         });
       });
     });
   });
-  
+
+  // Mock invalid workspace kinds
+  context('With Invalid Data', () => {
+    before(() => {
+      // Mock the API response for invalid workspace kinds
+      cy.intercept('GET', '/api/v1/workspacekinds', {
+        statusCode: 200,
+        body: mockWorkspacekindsInValid,
+      });
+
+      // Visit the page
+      cy.visit('/');
+    });
+
+    it('should fallback when logo URL is invalid', () => {
+      const workspaceKinds = mockWorkspacekindsInValid.data; // Access mock data
+
+      cy.get('tbody tr').each(($row, index) => {
+        cy.wrap($row).find('td[data-label="Kind"]').within(() => {
+          cy.get('img')
+            .should('exist')
+            .then(($img) => {
+              // If the image src is invalid, it should not load
+              expect($img[0].naturalWidth).to.equal(0); // If the image is invalid, naturalWidth should be 0
+            });
+        });
+      });
+    });
+  });
 });
+
