@@ -1,31 +1,4 @@
-import { WorkspaceKind } from '~/shared/types';
-import { getWorkspaceKinds } from '~/shared/api/notebookService';
-
-
-const BFF_API_VERSION = 'v1'; // TODO: consider move this const to a more shared location
-const BASE_URL = `/api/${BFF_API_VERSION}`;
-
-/**
- * Fetches all workspacekinds from the API.
- * @returns {Promise<WorkspaceKind[]>} A promise resolving to an array of workspacekinds.
- * @throws An error if the API call fails.
- */
-export async function fetchAllWorkspacekinds(): Promise<WorkspaceKind[]> {
-  try {
-    const apiOptions = {
-      parseJSON: true,
-      headers: {
-        Accept: 'application/json',
-      },
-    };
-    const getWorkspaceskindsFunc = getWorkspaceKinds(BASE_URL);
-    const workspacekindsList = await getWorkspaceskindsFunc(apiOptions);
-    return workspacekindsList;
-  } catch (error) {
-    console.error('Error fetching all workspacekinds:', error);
-    throw error;
-  }
-}
+import useWorkspacekinds from '../hooks/useWorspacekinds';
 
 type KindLogoDict = Record<string, string>;
 
@@ -38,11 +11,13 @@ export async function buildKindLogoDictionary(): Promise<KindLogoDict> {
   const kindLogoDict: KindLogoDict = {};
 
   try {
-    const workspaceKinds: WorkspaceKind[] = await fetchAllWorkspacekinds();
-    for (const workspaceKind of workspaceKinds) {
-      kindLogoDict[workspaceKind.name] = workspaceKind.logo.url;
+    const [workspaceKinds, loaded, loadError] = useWorkspacekinds();
+    if (loaded && workspaceKinds) {
+      for (const workspaceKind of workspaceKinds.data) {
+        kindLogoDict[workspaceKind.name] = workspaceKind.logo.url;
+      }
     }
-
+    
     return kindLogoDict;
   } catch (error) {
     console.error('Error fetching workspace kinds or building kind logo dictionary:', error);
