@@ -9,19 +9,20 @@ type KindLogoDict = Record<string, string>;
  */
 export async function buildKindLogoDictionary(): Promise<KindLogoDict> {
   const kindLogoDict: KindLogoDict = {};
-
-  try {
-    const [workspaceKinds, loaded, loadError] = useWorkspacekinds();
-    if (loaded && workspaceKinds) {
-      for (const workspaceKind of workspaceKinds.data) {
-        kindLogoDict[workspaceKind.name] = workspaceKind.logo.url;
-      }
+  console.log("Im here from WorkspaceActopns!")
+  const [workspaceKinds, loaded, loadError] = useWorkspacekinds();
+  if (loaded && workspaceKinds) {
+    console.log("Im here !")
+    for (const workspaceKind of workspaceKinds) {
+      kindLogoDict[workspaceKind.name] = workspaceKind.logo.url;
     }
-    
-    return kindLogoDict;
-  } catch (error) {
-    console.error('Error fetching workspace kinds or building kind logo dictionary:', error);
-    throw error;
+  } else {
+    if (loadError) {
+      console.error('Error loading workspacekinds: ', loadError);
+    }
   }
+
+  return kindLogoDict;
 }
+
 

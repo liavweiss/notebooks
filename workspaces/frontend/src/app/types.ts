@@ -67,11 +67,7 @@ export type NamespacesList = {
 
 export type GetNamespaces = (opts: APIOptions) => Promise<NamespacesList>;
 
-export type WorkspacekindsList = {
-  data: WorkspaceKind[];
-};
-
-export type GetWorkspacekinds = (opts: APIOptions) => Promise<WorkspacekindsList>;
+export type GetWorkspacekinds = (opts: APIOptions) => Promise<WorkspaceKind[]>;
 
 export type NotebookAPIs = {
   getNamespaces: GetNamespaces;
