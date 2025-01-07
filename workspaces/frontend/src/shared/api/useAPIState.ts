@@ -6,7 +6,7 @@ const useAPIState = <T>(
   createAPI: (path: string) => T,
 ): [apiState: APIState<T>, refreshAPIState: () => void] => {
   const [internalAPIToggleState, setInternalAPIToggleState] = React.useState(false);
-
+  console.log("Im here from useAPIState")
   const refreshAPIState = React.useCallback(() => {
     setInternalAPIToggleState((v) => !v);
   }, []);
@@ -18,7 +18,7 @@ const useAPIState = <T>(
       path = '';
     }
     const api = createAPI(path);
-
+    console.log("Im here after createAPI")
     return {
       apiAvailable: !!path,
       api,

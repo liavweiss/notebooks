@@ -138,6 +138,32 @@ export const Workspaces: React.FunctionComponent = () => {
     loadKindLogoDict();
   }, [workspaces]);
 
+  // React.useEffect(() => {
+  //     const loadKindLogoDict = async () => {
+  //       try {
+  //         type KindLogoDict = Record<string, string>;
+  //         const dict: KindLogoDict = {};
+
+  //         const [workspaceKinds, loaded, loadError] = useWorkspacekinds();
+  //         if (loaded && workspaceKinds) {
+  //           console.log("Im here !")
+  //           for (const workspaceKind of workspaceKinds) {
+  //             kindLogoDict[workspaceKind.name] = workspaceKind.logo.url;
+  //           }
+  //         } else {
+  //           if (loadError) {
+  //             console.error('Error loading workspacekinds: ', loadError);
+  //           }
+  //         }
+  //         setKindLogoDict(dict);
+  //       } catch (err: any) {
+  //         console.log(err.message || 'Failed to load kind logo dictionary');
+  //       }
+  //     };
+  
+  //     loadKindLogoDict();
+  //   }, [workspaces]);
+
   // Table columns
   const columnNames = {
     name: 'Name',
