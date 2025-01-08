@@ -1,8 +1,8 @@
 import { NamespacesList} from '~/app/types';
-import { WorkspaceKind } from '../types';
 import { isNotebookResponse, restGET } from '~/shared/api/apiUtils';
 import { APIOptions } from '~/shared/api/types';
 import { handleRestFailures } from '~/shared/api/errorUtils';
+import { WorkspaceKind } from '../types';
 
 export const getNamespaces =
   (hostPath: string) =>
@@ -17,8 +17,7 @@ export const getNamespaces =
   export const getWorkspacekinds =
     (hostPath: string) =>
     (opts: APIOptions): Promise<WorkspaceKind[]> =>
-      handleRestFailures(restGET(hostPath, `/workspacekinds/`, {}, opts)).then((response) => {
-        console.log("Im here from notebookkService")
+      handleRestFailures(restGET(hostPath, `workspacekinds/`, {}, opts)).then((response) => {
         if (isNotebookResponse<WorkspaceKind[]>(response)) {
           return response.data;
         }

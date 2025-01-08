@@ -1,27 +1,34 @@
-import useWorkspacekinds from '../hooks/useWorspacekinds';
+import { WorkspaceKind } from '~/shared/types';
 
 type KindLogoDict = Record<string, string>;
 
+// /**
+//  * Fetches all workspace kinds, builds a dictionary of kind names to logos, and returns it.
+//  * @returns {KindLogoDict} A dictionary with kind names as keys and logo URLs as values.
+//  * @throws An error if fetching workspace kinds fails.
+//  */
+// export async function buildKindLogoDictionary(worskspacekinds: WorkspaceKind[] | []): KindLogoDict {
+//   const kindLogoDict: KindLogoDict = {};
+
+//   for (const workspaceKind of worskspacekinds) {
+//     kindLogoDict[workspaceKind.name] = workspaceKind.logo.url;
+//   }
+  
+//   return kindLogoDict;
+// }
+
 /**
  * Fetches all workspace kinds, builds a dictionary of kind names to logos, and returns it.
- * @returns {Promise<KindLogoDict>} A promise resolving to a dictionary with kind names as keys and logo URLs as values.
- * @throws An error if fetching workspace kinds fails.
+ * @param {WorkspaceKind[]} workspaceKinds - The list of workspace kinds.
+ * @returns {KindLogoDict} A dictionary with kind names as keys and logo URLs as values.
  */
-export async function buildKindLogoDictionary(): Promise<KindLogoDict> {
+export function buildKindLogoDictionary(workspaceKinds: WorkspaceKind[] | []): KindLogoDict {
   const kindLogoDict: KindLogoDict = {};
-  console.log("Im here from WorkspaceActopns!")
-  const [workspaceKinds, loaded, loadError] = useWorkspacekinds();
-  if (loaded && workspaceKinds) {
-    console.log("Im here !")
-    for (const workspaceKind of workspaceKinds) {
-      kindLogoDict[workspaceKind.name] = workspaceKind.logo.url;
-    }
-  } else {
-    if (loadError) {
-      console.error('Error loading workspacekinds: ', loadError);
-    }
-  }
 
+  for (const workspaceKind of workspaceKinds) {
+    kindLogoDict[workspaceKind.name] = workspaceKind.logo.url;
+  }
+  
   return kindLogoDict;
 }
 

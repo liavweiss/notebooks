@@ -7,9 +7,7 @@ type UseNotebookAPI = NotebookAPIState & {
 };
 
 export const useNotebookAPI = (): UseNotebookAPI => {
-  console.log("Im here from useNotebookAPI")
   const { apiState, refreshAPIState: refreshAllAPI } = React.useContext(NotebookContext);
-  console.log("Im here after useNotebookAPI")
   return {
     refreshAllAPI,
     ...apiState,

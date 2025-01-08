@@ -11,7 +11,6 @@ export type NotebookAPIState = APIState<NotebookAPIs>;
 const useNotebookAPIState = (
   hostPath: string | null,
 ): [apiState: NotebookAPIState, refreshAPIState: () => void] => {
-  console.log("Im here from useNotebookApiSrate")
   const createAPI = React.useCallback(
     (path: string) => ({
       getNamespaces: getNamespaces(path),

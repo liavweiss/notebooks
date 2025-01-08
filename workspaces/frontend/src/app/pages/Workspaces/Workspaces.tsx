@@ -39,6 +39,8 @@ import {
 import { FilterIcon } from '@patternfly/react-icons';
 import { Workspace, WorkspaceState } from '~/shared/types';
 import { buildKindLogoDictionary } from '~/app/actions/WorkspacekindsActions';
+import useWorkspacekinds from '~/app/hooks/useWorspacekinds';
+
 
 export const Workspaces: React.FunctionComponent = () => {
   /* Mocked workspaces, to be removed after fetching info from backend */
@@ -123,46 +125,14 @@ export const Workspaces: React.FunctionComponent = () => {
     },
   ];
 
-  const [kindLogoDict, setKindLogoDict] = React.useState<Record<string, string>>({});
+  const [workspaceKinds, loaded, loadError] = useWorkspacekinds();
+  let kindLogoDict = {};
 
-  React.useEffect(() => {
-    const loadKindLogoDict = async () => {
-      try {
-        const dict = await buildKindLogoDictionary();
-        setKindLogoDict(dict);
-      } catch (err: any) {
-        console.log(err.message || 'Failed to load kind logo dictionary');
-      }
-    };
-
-    loadKindLogoDict();
-  }, [workspaces]);
-
-  // React.useEffect(() => {
-  //     const loadKindLogoDict = async () => {
-  //       try {
-  //         type KindLogoDict = Record<string, string>;
-  //         const dict: KindLogoDict = {};
-
-  //         const [workspaceKinds, loaded, loadError] = useWorkspacekinds();
-  //         if (loaded && workspaceKinds) {
-  //           console.log("Im here !")
-  //           for (const workspaceKind of workspaceKinds) {
-  //             kindLogoDict[workspaceKind.name] = workspaceKind.logo.url;
-  //           }
-  //         } else {
-  //           if (loadError) {
-  //             console.error('Error loading workspacekinds: ', loadError);
-  //           }
-  //         }
-  //         setKindLogoDict(dict);
-  //       } catch (err: any) {
-  //         console.log(err.message || 'Failed to load kind logo dictionary');
-  //       }
-  //     };
-  
-  //     loadKindLogoDict();
-  //   }, [workspaces]);
+  if (loaded && workspaceKinds) {
+    kindLogoDict = buildKindLogoDictionary(workspaceKinds);
+  } else {
+    console.error(loadError || 'Failed to load workspace kinds.');
+  }  
 
   // Table columns
   const columnNames = {
