@@ -3,7 +3,7 @@ import { WorkspaceKind } from '~/shared/types';
 type KindLogoDict = Record<string, string>;
 
 /**
- * Fetches all workspace kinds, builds a dictionary of kind names to logos, and returns it.
+ * Builds a dictionary of kind names to logos, and returns it.
  * @param {WorkspaceKind[]} workspaceKinds - The list of workspace kinds.
  * @returns {KindLogoDict} A dictionary with kind names as keys and logo URLs as values.
  */
