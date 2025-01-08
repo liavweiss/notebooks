@@ -15,6 +15,7 @@ export const NotebookContext = React.createContext<NotebookContextType>({
 
 export const NotebookContextProvider: React.FC = ({ children }) => {
   const hostPath = `/api/${BFF_API_VERSION}/`;
+  
   const [apiState, refreshAPIState] = useNotebookAPIState(hostPath);
 
   return (

@@ -126,7 +126,7 @@ export const Workspaces: React.FunctionComponent = () => {
   ];
 
   const [workspaceKinds, loaded, loadError] = useWorkspacekinds();
-  let kindLogoDict = {};
+  let kindLogoDict: Record<string, string> = {};
 
   if (loaded && workspaceKinds) {
     kindLogoDict = buildKindLogoDictionary(workspaceKinds);
@@ -463,7 +463,7 @@ export const Workspaces: React.FunctionComponent = () => {
                   <Brand
                     src={kindLogoDict[workspace.kind]}
                     alt={workspace.kind}
-                    style={{ width: '20px', height: '20px', cursor: 'pointer' }} // Optional inline styles
+                    style={{ width: '20px', height: '20px', cursor: 'pointer' }}
                   />
                 </Tooltip>
               </Td>
