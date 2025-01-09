@@ -25,6 +25,8 @@ import {
   Button,
   PaginationVariant,
   Pagination,
+  Tooltip,
+  Brand,
 } from '@patternfly/react-core';
 import {
   Table,
@@ -42,6 +44,8 @@ import { Workspace, WorkspacesColumnNames, WorkspaceState } from '~/shared/types
 import { WorkspaceDetails } from '~/app/pages/Workspaces/Details/WorkspaceDetails';
 import { ExpandedWorkspaceRow } from '~/app/pages/Workspaces/ExpandedWorkspaceRow';
 import { formatRam } from 'shared/utilities/WorkspaceResources';
+import { buildKindLogoDictionary } from '~/app/actions/WorkspacekindsActions';
+import useWorkspacekinds from '~/app/hooks/useWorspacekinds';
 
 export const Workspaces: React.FunctionComponent = () => {
   /* Mocked workspaces, to be removed after fetching info from backend */
@@ -142,6 +146,15 @@ export const Workspaces: React.FunctionComponent = () => {
       },
     },
   ];
+
+  const [workspaceKinds, loaded, loadError] = useWorkspacekinds();
+  let kindLogoDict: Record<string, string> = {};
+
+  if (loaded && workspaceKinds) {
+    kindLogoDict = buildKindLogoDictionary(workspaceKinds);
+  } else {
+    console.error(loadError || 'Failed to load workspace kinds.');
+  }  
 
   // Table columns
   const columnNames: WorkspacesColumnNames = {
@@ -548,7 +561,15 @@ export const Workspaces: React.FunctionComponent = () => {
                       }}
                     />
                     <Td dataLabel={columnNames.name}>{workspace.name}</Td>
-                    <Td dataLabel={columnNames.kind}>{workspace.kind}</Td>
+                    <Td dataLabel={columnNames.kind}>
+                      <Tooltip content={workspace.kind}>
+                        <Brand
+                          src={kindLogoDict[workspace.kind]}
+                          alt={workspace.kind}
+                          style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                        />
+                      </Tooltip>
+                    </Td>
                     <Td dataLabel={columnNames.image}>{workspace.options.imageConfig}</Td>
                     <Td dataLabel={columnNames.podConfig}>{workspace.options.podConfig}</Td>
                     <Td dataLabel={columnNames.state}>
