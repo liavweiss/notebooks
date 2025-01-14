@@ -45,7 +45,7 @@ import { WorkspaceDetails } from '~/app/pages/Workspaces/Details/WorkspaceDetail
 import { ExpandedWorkspaceRow } from '~/app/pages/Workspaces/ExpandedWorkspaceRow';
 import { formatRam } from 'shared/utilities/WorkspaceResources';
 import { buildKindLogoDictionary } from '~/app/actions/WorkspacekindsActions';
-import useWorkspacekinds from '~/app/hooks/useWorspacekinds';
+import useWorkspacekinds from '~/app/hooks/useWorkspacekinds';
 
 export const Workspaces: React.FunctionComponent = () => {
   /* Mocked workspaces, to be removed after fetching info from backend */
