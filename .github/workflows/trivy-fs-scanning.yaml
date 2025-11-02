@@ -13,6 +13,7 @@ on:
         options:
           - notebooks-v1
           - notebooks-v2
+          - test-cve-branch
 
 permissions:
   actions: read
@@ -25,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.branch)) || fromJSON('["notebooks-v1", "notebooks-v2"]') }}
+        branch: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.branch)) || fromJSON('["notebooks-v1", "notebooks-v2", "test-cve-branch"]') }}
     steps:
     - name: Checkout code
       id: checkout
