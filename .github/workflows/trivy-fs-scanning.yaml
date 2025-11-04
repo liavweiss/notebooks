@@ -13,7 +13,7 @@ on:
         options:
           - notebooks-v1
           - notebooks-v2
-          - test-cve-branch
+          - vulnerability-plan
 
 permissions:
   actions: read
@@ -26,7 +26,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.branch)) || fromJSON('["notebooks-v1", "notebooks-v2", "test-cve-branch"]') }}
+        branch: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.branch)) || fromJSON('["notebooks-v1", "notebooks-v2", "vulnerability-plan"]') }}
     steps:
     - name: Checkout code
       id: checkout
@@ -57,3 +57,9 @@ jobs:
           sarif_file: 'trivy-fs-scan-results-${{ matrix.branch }}.sarif'
           ref: ${{ steps.checkout.outputs.ref }}
           sha: ${{ steps.checkout.outputs.commit }}
+
+    - name: Upload Trivy SARIF as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: trivy-scan-results-${{ matrix.branch }}
+        path: trivy-fs-scan-results-${{ matrix.branch }}.sarif
