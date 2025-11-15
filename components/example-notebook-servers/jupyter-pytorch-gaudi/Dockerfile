@@ -21,9 +21,9 @@ ARG HCCL_OFI_WRAPPER_VERSION=1.18.0
 ARG LIBFABRIC_VERSION=1.22.0
 ARG PYTORCH_VERSION=2.5.1
 
-# Gaudi 1.19 does not currently support Python 3.11, so we downgrade to 3.10
+# NOTE: Ensure compatibility with the GAUDI support matrix when changing Python
 # https://docs.habana.ai/en/latest/Support_Matrix/Support_Matrix.html
-ARG PYTHON_VERSION=3.10.16
+ARG PYTHON_VERSION=3.12.6
 RUN sed -i "s/python ==.*/python ==${PYTHON_VERSION}/" ${CONDA_DIR}/conda-meta/pinned \
  && conda install -y -q \
     python==${PYTHON_VERSION} \

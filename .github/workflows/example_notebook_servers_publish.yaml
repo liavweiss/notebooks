@@ -5,6 +5,7 @@ on:
       - main
       - notebooks-v1
       - v*-branch
+      - feature/python-3.12-example-notebook-server
     paths:
       - components/example-notebook-servers/**
       - releasing/version/VERSION
