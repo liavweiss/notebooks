@@ -14,6 +14,7 @@ on:
           - notebooks-v1
           - notebooks-v2
           - vulnerability-plan
+          - fix-nb-controller-x-net-vulnerability
 
 permissions:
   actions: read
@@ -26,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.branch)) || fromJSON('["notebooks-v1", "notebooks-v2", "vulnerability-plan"]') }}
+        branch: ${{ github.event_name == 'workflow_dispatch' && fromJSON(format('["{0}"]', github.event.inputs.branch)) || fromJSON('["notebooks-v1", "notebooks-v2", "vulnerability-plan", "fix-nb-controller-x-net-vulnerability"]') }}
     steps:
     - name: Checkout code
       id: checkout
